@@ -1,0 +1,8 @@
+test/suite/workers.coroutine.revcon:
+[store]
+  main: Ø
+  ws: [worker (), worker ()]
+
+[stack]
+[spawn main main begin () | resume main (ws) | despawn main main end ()] <|> []
+

@@ -1,0 +1,9 @@
+test/suite/queue-loop.coroutine.revcon:
+[store]
+  main: Ø
+  result: []
+  sum: 0
+
+[stack]
+[spawn main main end () | unresume main (sum, result) | despawn main main begin ()] <|> []
+

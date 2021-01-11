@@ -1,0 +1,13 @@
+@coroutine
+
+function plus(int a, int b, int c) {
+  c += a + b
+}
+
+coroutine main() {
+  local int x
+  local int y
+  uncall @plus(x,y,y)
+  delocal int x
+  delocal int y
+}

@@ -1,0 +1,8 @@
+test/suite/queue.coroutine.revcon:
+[store]
+  main: Ø
+  q: [>>]
+
+[stack]
+[spawn main main end () | unresume main (q) | despawn main main begin ()] <|> []
+

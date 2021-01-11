@@ -1,0 +1,15 @@
+@coroutine
+
+coroutine main() {
+  local int x 0
+  local int y 0
+  spawn t test
+  resume t (x, y, y)
+  despawn t test
+  delocal int x 0
+  delocal int y 0
+}
+
+coroutine test(int a, int b, int c) {
+  skip
+}

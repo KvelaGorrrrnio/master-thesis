@@ -1,0 +1,31 @@
+test/suite/transactions.actor.revcon:
+[store]
+  !mailbox: [>MessageVal (-1) 0 "init" []>]
+  !message: Ø
+  !messages: []
+  main: Ø
+
+[stack]
+[spawn main main | from UnOpEmpty (!mailbox) do 
+[pop !message !messages | undeliver "!message" | undequeue !message !mailbox] <|> []
+ loop 
+[] <|> []
+ until UnOpEmpty (!messages) | unsend Left "main".init() | despawn main main] <|> []
+
+
+[procedures]
+bank.close()
+bank.deposit(amount, account)
+bank.open(inVault)
+bank.withdraw(amount, account)
+main.closed(inVault)
+main.deposited(inAmount, inAccount)
+main.init()
+main.opened()
+main.waitForRequests()
+main.withdrawn(inAmount, inAccount)
+
+[globals]
+bad_requests: 0
+vault: []
+wallet: 0

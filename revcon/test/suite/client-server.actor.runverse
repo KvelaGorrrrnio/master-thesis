@@ -1,0 +1,30 @@
+test/suite/client-server.actor.revcon:
+[store]
+  !mailbox: [>MessageVal (-1) 0 "init" []>]
+  !message: Ø
+  !messages: []
+  main: Ø
+
+[stack]
+[spawn main main | from UnOpEmpty (!mailbox) do 
+[pop !message !messages | undeliver "!message" | undequeue !message !mailbox] <|> []
+ loop 
+[] <|> []
+ until UnOpEmpty (!messages) | unsend Left "main".init() | despawn main main] <|> []
+
+
+[procedures]
+main.connected(inWorker)
+main.disconnected()
+main.init()
+main.serverdown()
+main.serverup()
+main.worked(inData)
+server.connect()
+server.disconnect(worker)
+server.setup()
+server.shutdown()
+worker.work(data)
+
+[globals]
+workable_data: 0

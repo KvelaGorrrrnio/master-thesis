@@ -1,0 +1,8 @@
+test/suite/looping-worker.coroutine.revcon:
+[store]
+  main: Ø
+  sum: 55
+
+[stack]
+[spawn main main begin () | resume main (sum) | despawn main main end ()] <|> []
+

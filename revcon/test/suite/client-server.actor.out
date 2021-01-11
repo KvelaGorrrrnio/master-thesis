@@ -1,0 +1,30 @@
+test/suite/client-server.actor.revcon:
+[store]
+  !mailbox: [>>]
+  !message: Ø
+  !messages: [MessageVal 1 0 "serverdown" [], MessageVal 0 1 "shutdown" [], MessageVal 1 0 "disconnected" [], MessageVal 0 1 "disconnect" [Ø], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 5 0 "worked" [0], MessageVal 0 5 "work" [0], MessageVal 1 0 "connected" [Ø], MessageVal 0 1 "connect" [], MessageVal 1 0 "serverup" [], MessageVal 0 1 "setup" [], MessageVal (-1) 0 "init" []]
+  main: Ø
+
+[stack]
+[spawn main main | send Left "main".init() | from UnOpEmpty (!messages) do 
+[dequeue !message !mailbox | deliver "!message" | push !message !messages] <|> []
+ loop 
+[] <|> []
+ until UnOpEmpty (!mailbox) | despawn main main] <|> []
+
+
+[procedures]
+main.connected(inWorker)
+main.disconnected()
+main.init()
+main.serverdown()
+main.serverup()
+main.worked(inData)
+server.connect()
+server.disconnect(worker)
+server.setup()
+server.shutdown()
+worker.work(data)
+
+[globals]
+workable_data: 110

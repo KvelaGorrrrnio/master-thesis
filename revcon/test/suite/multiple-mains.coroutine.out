@@ -1,0 +1,2 @@
+Multiple coroutines named main was found.
+Only one main must be defined.

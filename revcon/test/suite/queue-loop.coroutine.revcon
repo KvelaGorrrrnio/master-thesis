@@ -1,0 +1,35 @@
+@coroutine
+
+coroutine main(int sum, list int result) {
+  # Setup
+  local queue int queue
+  local int x
+
+  # Pre-work
+  x += 5
+  enqueue x queue
+  x += 3
+  enqueue x queue
+  x += 2
+  enqueue x queue
+  x += 9
+  enqueue x queue
+  x += 1
+  enqueue x queue
+  x += 2
+  enqueue x queue
+  x += 4
+  enqueue x queue
+
+  # Work
+  from size queue == 7
+  loop
+    dequeue x queue
+    sum += x
+    push x result
+  until empty queue
+
+  # Teardown
+  delocal int x
+  delocal queue int queue
+}

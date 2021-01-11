@@ -1,0 +1,67 @@
+@coroutine
+
+coroutine main(int sum) {
+  # Setup
+  local int initial_memory_address 0
+  spawn producer remote_memory
+  spawn consumer local_sum
+  spawn s stream (initial_memory_address)
+
+  # Do stuff
+  resume s (producer, consumer)
+
+  # Get result
+  resume consumer(sum)
+
+  # Teardown
+  despawn s stream (initial_memory_address)
+  despawn producer remote_memory
+  despawn consumer local_sum
+  delocal int initial_memory_address 0
+}
+
+coroutine stream(coroutine(int,int) producer, coroutine(int) consumer) with (int initial_memory_address) {
+  local int memory_address initial_memory_address
+  local int data 0
+  from memory_address == initial_memory_address
+  do
+    resume producer (memory_address, data)
+    resume consumer (data)
+  until memory_address == initial_memory_address
+  delocal int data 0
+  delocal int memory_address initial_memory_address
+}
+
+coroutine remote_memory(int pointer, int data) {
+  # Setup
+  local list int memory [1,2,3,4,5,6,7,8,9,10]
+  local int initial_pointer pointer
+
+  # Produce
+  from initial_pointer == pointer
+  loop
+    data += memory[pointer]
+    pointer += 1
+    yield produce
+    pointer -= 1
+    data -= memory[pointer]
+    pointer += 1
+  until pointer == size memory
+
+  # Teardown
+  pointer -= size memory - initial_pointer
+  delocal int initial_pointer pointer
+  delocal list int memory [1,2,3,4,5,6,7,8,9,10]
+}
+
+coroutine local_sum(int data) {
+  local int sum 0
+  from sum == 0
+  do
+    sum += data
+    yield consume
+  until data == 0
+  yield get_sum
+  swap sum data
+  delocal int sum 0
+}

@@ -1,0 +1,9 @@
+@coroutine
+
+coroutine main() {
+  a += 1
+}
+
+coroutine main() {
+  a += 2
+}

@@ -1,0 +1,29 @@
+@coroutine
+
+coroutine main(int sum) {
+  spawn w worker
+  local int x 0
+
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+  resume w (sum, x)
+
+  delocal int x 10
+  despawn w worker mid
+}
+
+coroutine worker(int sum, int i) {
+  from i == 0
+  do i += 1
+  loop
+    sum += i
+    yield mid
+  until i == 0
+}

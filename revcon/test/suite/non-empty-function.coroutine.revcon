@@ -1,0 +1,9 @@
+@coroutine
+
+function nonEmptyLocalState() {
+  local int a 5
+}
+
+coroutine main() {
+  call @nonEmptyLocalState()
+}

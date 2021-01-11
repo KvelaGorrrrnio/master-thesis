@@ -1,0 +1,8 @@
+test/suite/pass-coroutines.coroutine.revcon:
+[store]
+  a: 0
+  main: Ø
+
+[stack]
+[spawn main main end () | unresume main (a) | despawn main main begin ()] <|> []
+

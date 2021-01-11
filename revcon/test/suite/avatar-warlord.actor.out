@@ -1,0 +1,27 @@
+test/suite/avatar-warlord.actor.revcon:
+[store]
+  !mailbox: [>>]
+  !message: Ø
+  !messages: [MessageVal 2 0 "down" [2], MessageVal 1 0 "down" [1], MessageVal 0 2 "teardown" [0], MessageVal 0 1 "teardown" [0], MessageVal 2 0 "victory" [0], MessageVal 2 2 "win" [], MessageVal 1 2 "defend" [1], MessageVal 0 1 "attack" [ActorVal 2], MessageVal 0 2 "init" [2], MessageVal 0 1 "init" [1], MessageVal (-1) 0 "init" []]
+  main: Ø
+
+[stack]
+[spawn main main | send Left "main".init() | from UnOpEmpty (!messages) do 
+[dequeue !message !mailbox | deliver "!message" | push !message !messages] <|> []
+ loop 
+[] <|> []
+ until UnOpEmpty (!mailbox) | despawn main main] <|> []
+
+
+[procedures]
+main.down(inElement)
+main.init()
+main.victory(inElement)
+nation.attack(nation)
+nation.defend(attackingElement)
+nation.init(inElement)
+nation.teardown(inElement)
+nation.win()
+
+[globals]
+winningNation: 2

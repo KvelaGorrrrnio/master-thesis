@@ -1,0 +1,11 @@
+@coroutine
+
+function square(int x, int output) {
+  output += x * x
+}
+
+coroutine main(int x) {
+  local int a 5
+  call @square (a, x)
+  delocal int a 5
+}

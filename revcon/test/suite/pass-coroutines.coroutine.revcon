@@ -1,0 +1,18 @@
+@coroutine
+
+coroutine main(int a) {
+  spawn w1 worker
+  spawn h1 handler
+  resume h1 (w1,a)
+  despawn h1 handler
+  despawn w1 worker unique
+}
+
+coroutine worker(int x) {
+  x += 100
+  yield unique
+}
+
+coroutine handler(coroutine(int) c, int x) {
+  resume c (x)
+}

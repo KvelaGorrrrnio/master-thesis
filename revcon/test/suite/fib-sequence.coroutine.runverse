@@ -1,0 +1,8 @@
+test/suite/fib-sequence.coroutine.revcon:
+[store]
+  fibList: []
+  main: Ø
+
+[stack]
+[spawn main main end () | unresume main (fibList) | despawn main main begin ()] <|> []
+

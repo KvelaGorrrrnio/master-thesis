@@ -1,0 +1,9 @@
+@coroutine
+
+coroutine main(int a) {
+  if a == 1
+  then skip
+  else skip
+  fi a == 0
+}
+

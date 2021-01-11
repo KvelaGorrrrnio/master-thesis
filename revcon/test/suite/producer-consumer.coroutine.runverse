@@ -1,0 +1,8 @@
+test/suite/producer-consumer.coroutine.revcon:
+[store]
+  main: Ø
+  sum: 0
+
+[stack]
+[spawn main main end () | unresume main (sum) | despawn main main begin ()] <|> []
+

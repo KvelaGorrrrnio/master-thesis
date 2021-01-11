@@ -1,0 +1,7 @@
+@coroutine
+
+coroutine main() {
+  local int a 10
+  a *= 0
+  delocal int a
+}

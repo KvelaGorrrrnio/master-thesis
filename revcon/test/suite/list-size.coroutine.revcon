@@ -1,0 +1,7 @@
+@coroutine
+
+coroutine main(int x) {
+  local list int L [1,2,3,4,5,6,7,1,2]
+  x += size L
+  delocal list int L [1,2,3,4,5,6,7,1,2]
+}

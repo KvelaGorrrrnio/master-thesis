@@ -1,0 +1,8 @@
+test/suite/generators.coroutine.revcon:
+[store]
+  hist: [1, 1, 1, 1, 1, 16, 9, 4, 1]
+  main: Ø
+
+[stack]
+[spawn main main begin () | resume main (hist) | despawn main main end ()] <|> []
+

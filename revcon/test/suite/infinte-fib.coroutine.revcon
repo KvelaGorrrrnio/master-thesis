@@ -1,0 +1,62 @@
+@coroutine
+
+coroutine main (list list int pairs) {
+  # Setup
+  local int tmp
+  local int i
+  local int x1
+  local int x2
+  local list int pair
+  spawn fib infiniteFib
+
+  # Work
+  from i == 0
+  do
+    resume fib(x1,x2)
+    tmp += x2
+    push tmp pair
+    tmp += x1
+    push tmp pair
+    push pair pairs
+    i += 1
+  until i == 10
+
+  # Deinit x1 x2
+  pop pair pairs
+  call @deinit_last_pair(x1,x2,pair)
+  push pair pairs
+
+
+  # Teardown
+  despawn fib infiniteFib serve
+  delocal list int pair
+  delocal int x1
+  delocal int x2
+  delocal int i 10
+  delocal int tmp
+}
+
+coroutine infiniteFib(int x1, int x2) {
+  x1 += 1
+  x2 += 1
+  from x1 == 1 and x2 == 1
+  do
+    x1 += x2
+    swap x1 x2
+    yield serve
+  until 0
+}
+
+function deinit_last_pair(int x1, int x2, list int pair) {
+  local int tmp
+
+  pop tmp pair
+  tmp -= x1
+  pop tmp pair
+  tmp -= x2
+
+  push x2 pair
+  push x1 pair
+
+  delocal int tmp
+}

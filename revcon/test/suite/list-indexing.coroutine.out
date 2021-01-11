@@ -1,0 +1,8 @@
+test/suite/list-indexing.coroutine.revcon:
+[store]
+  main: Ø
+  x: 12
+
+[stack]
+[spawn main main begin () | resume main (x) | despawn main main end ()] <|> []
+

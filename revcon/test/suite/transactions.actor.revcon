@@ -1,0 +1,108 @@
+@actor
+
+global list int vault
+global int wallet
+global int bad_requests
+
+actor main.init() {
+  spawn bank bank
+
+  local int emptyAccount, i
+  from i == 0
+  do
+    push emptyAccount vault
+    push emptyAccount vault
+    push emptyAccount vault
+    push emptyAccount vault
+    i += 1
+  until i == 10
+  i -= 10
+  delocal int emptyAccount, i
+
+  wallet += 100000
+
+  send bank.open(vault)
+}
+
+actor main.opened() {
+  local int account, amount
+  local int numOfRequests
+
+  # Request 1
+  account += 5
+  amount  += 5000
+  send bank.deposit(amount, account)
+  numOfRequests += 1
+
+  # Request 2
+  account += 2
+  amount  += 7000
+  send bank.withdraw(amount, account)
+  numOfRequests += 1
+
+  # Request 3
+  account += 5
+  amount  += 3500
+  send bank.withdraw(amount, account)
+  numOfRequests += 1
+
+  # Request 4
+  account += 2
+  amount  += 7213
+  send bank.deposit(amount, account)
+  numOfRequests += 1
+
+  send self.waitForRequests()
+
+  delocal int account, amount
+}
+
+actor main.closed(list int inVault) {
+  swap vault inVault
+  despawn bank bank
+  delocal int numOfRequests
+}
+
+actor main.deposited(int inAmount, int inAccount) {
+  numOfRequests -= 1
+  wallet -= inAmount
+}
+
+actor main.withdrawn(int inAmount, int inAccount) {
+  numOfRequests -= 1
+  if inAmount > 0
+  then wallet += inAmount
+  else bad_requests += 1
+  fi inAmount > 0
+}
+
+actor main.waitForRequests() {
+  if numOfRequests == 0
+  then send bank.close()
+  else send self.waitForRequests()
+  fi numOfRequests == 0
+}
+
+actor bank.open(list int inVault) from manager {
+  local list int vault
+  swap vault inVault
+  send manager.opened()
+}
+actor bank.close() from manager {
+  send manager.closed(vault)
+  delocal list int vault
+}
+actor bank.deposit(int amount, int account) from client {
+  vault[account] += amount
+  send client.deposited(amount, account)
+}
+actor bank.withdraw(int amount, int account) from client {
+  local int withdrawnAmount 0
+  if vault[account] > (amount + 1) then
+    vault[account] -= amount
+    swap withdrawnAmount amount
+  else skip
+  fi withdrawnAmount > 0
+  send client.withdrawn(withdrawnAmount, account)
+  delocal int withdrawnAmount 0
+}

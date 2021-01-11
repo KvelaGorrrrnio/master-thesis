@@ -1,0 +1,31 @@
+test/suite/transactions.actor.revcon:
+[store]
+  !mailbox: [>>]
+  !message: Ø
+  !messages: [MessageVal 1 0 "closed" [[]], MessageVal 0 1 "close" [], MessageVal 0 0 "waitForRequests" [], MessageVal 1 0 "deposited" [7213,2], MessageVal 1 0 "withdrawn" [3500,5], MessageVal 1 0 "withdrawn" [0,2], MessageVal 1 0 "deposited" [5000,5], MessageVal 0 0 "waitForRequests" [], MessageVal 0 1 "deposit" [0,0], MessageVal 0 1 "withdraw" [0,0], MessageVal 0 1 "withdraw" [7000,0], MessageVal 0 1 "deposit" [0,0], MessageVal 1 0 "opened" [], MessageVal 0 1 "open" [[]], MessageVal (-1) 0 "init" []]
+  main: Ø
+
+[stack]
+[spawn main main | send Left "main".init() | from UnOpEmpty (!messages) do 
+[dequeue !message !mailbox | deliver "!message" | push !message !messages] <|> []
+ loop 
+[] <|> []
+ until UnOpEmpty (!mailbox) | despawn main main] <|> []
+
+
+[procedures]
+bank.close()
+bank.deposit(amount, account)
+bank.open(inVault)
+bank.withdraw(amount, account)
+main.closed(inVault)
+main.deposited(inAmount, inAccount)
+main.init()
+main.opened()
+main.waitForRequests()
+main.withdrawn(inAmount, inAccount)
+
+[globals]
+bad_requests: 1
+vault: [0, 0, 7213, 0, 0, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+wallet: 91287

@@ -1,0 +1,8 @@
+@coroutine
+
+coroutine main(int x) {
+  local list int a [1,2,3,4,5]
+  x += a[1+2]
+  x *= a[4/2]
+  delocal list int a [1,2,3,4,5]
+}

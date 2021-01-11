@@ -1,0 +1,5 @@
+@coroutine
+
+coroutine this_is_not_main() {
+  a += 1
+}

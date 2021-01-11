@@ -1,0 +1,8 @@
+test/suite/infinte-fib.coroutine.revcon:
+[store]
+  main: Ø
+  pairs: []
+
+[stack]
+[spawn main main end () | unresume main (pairs) | despawn main main begin ()] <|> []
+

@@ -1,0 +1,8 @@
+test/suite/even-sequence.coroutine.revcon:
+[store]
+  main: Ø
+  seq: [10, 8, 6, 4, 2]
+
+[stack]
+[spawn main main begin () | resume main (seq) | despawn main main end ()] <|> []
+

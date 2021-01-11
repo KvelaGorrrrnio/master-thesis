@@ -1,0 +1,27 @@
+@coroutine
+
+coroutine main(queue int q) {
+  local int n
+
+  # E1
+  n += 2
+  enqueue n q
+
+  # E2
+  n += 8
+  enqueue n q
+
+  # E3
+  n -= 13
+  enqueue n q
+
+  # D1
+  dequeue n q
+  n -= 2
+
+  # D2
+  dequeue n q
+  n -= 8
+
+  delocal int n
+}

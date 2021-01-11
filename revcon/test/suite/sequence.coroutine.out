@@ -1,0 +1,8 @@
+test/suite/sequence.coroutine.revcon:
+[store]
+  a: 10
+  main: Ø
+
+[stack]
+[spawn main main begin () | resume main (a) | despawn main main end ()] <|> []
+

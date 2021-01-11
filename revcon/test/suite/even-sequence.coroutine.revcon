@@ -1,0 +1,17 @@
+@coroutine
+
+coroutine main(list int seq) {
+  local int i
+  local int tmp
+  from i == 0
+  do
+    if i == 2 or i == 4 or i == 6 or i == 8 or i == 10 then
+      tmp += i
+      push tmp seq
+    else skip
+    fi i == 2 or i == 4 or i == 6 or i == 8 or i == 10
+  loop i += 1
+  until i == 10
+  delocal int tmp
+  delocal int i 10
+}

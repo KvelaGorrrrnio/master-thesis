@@ -1,0 +1,7 @@
+@coroutine
+
+coroutine main(int a) {
+  a += 4
+  yield checkpoint
+  a += 8
+}
