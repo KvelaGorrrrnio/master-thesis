@@ -1,0 +1,21 @@
+@actor
+global list actor hub
+
+actor main.init() {
+  spawn living_room_bulb bulb
+  spawn kitchen_bulb bulb
+  send living_room_bulb.setup()
+  send kitchen_bulb.setup()
+  push living_room_bulb hub
+  push kitchen_bulb hub
+}
+
+actor bulb.setup() {
+  local int isOn 1
+}
+actor bulb.toggl() {
+  isOn ^= 1
+}
+actor bulb.teardown(int in_isOn) {
+  delocal int isOn in_isOn
+}

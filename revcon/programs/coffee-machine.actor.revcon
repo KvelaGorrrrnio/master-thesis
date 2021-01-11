@@ -1,0 +1,60 @@
+@actor
+global list int coffee_supplies
+# 0: Coffee
+# 1: Chocolate
+# 2: Beer
+
+actor main.init() {
+  delocal list int coffee_supplies
+  local list int coffee_supplies [0,0,0]
+  spawn cm coffee_machine
+  send cm.start(coffee_supplies)
+}
+actor main.started() {
+  local int drink 0
+  send cm.brew(drink) # Coffee
+  delocal int drink
+}
+actor main.take(int drink, int brewed) {
+
+  if brewed
+  then send cm.shutdown()
+  else
+    local int amount 10
+    send cm.refill(drink, amount)
+    delocal int amount
+  fi brewed
+}
+actor main.refilled(int drink) {
+  send cm.brew(drink)
+}
+actor main.shutdowned(list int supplies) {
+  swap coffee_supplies supplies
+  despawn cm coffee_machine
+}
+
+actor coffee_machine.start(list int in_supplies) from manager {
+  local list int supplies
+  swap in_supplies supplies
+  send manager.started()
+}
+actor coffee_machine.refill(int drink, int amount) from manager {
+  supplies[drink] += amount
+  send manager.refilled(drink)
+}
+actor coffee_machine.shutdown() from manager {
+  send manager.shutdowned(supplies)
+  delocal list int supplies
+}
+
+actor coffee_machine.brew(int drink) from computer_scientist {
+  local int brewed 0
+  if supplies[drink] > 0
+  then
+    supplies[drink] -= 1
+    brewed += 1
+  else skip
+  fi brewed == 1
+  send computer_scientist.take(drink,brewed)
+  delocal int brewed 0
+}
