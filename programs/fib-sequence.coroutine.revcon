@@ -1,0 +1,53 @@
+@coroutine
+
+coroutine main (list int fibList) {
+  # Setup
+  local int tmp
+  local int i
+  local int x1
+  local int x2
+  spawn fib infiniteFib
+
+  # Work
+  from i == 0
+  do
+    resume fib(x1,x2)
+    if i == 0
+    then
+      tmp += x1
+      push tmp fibList
+      tmp += x2
+      push tmp fibList
+    else
+      tmp += x2
+      push tmp fibList
+    fi i == 0
+    i += 1
+  until i == 10
+
+  # Cleanup
+  pop tmp fibList
+  tmp -= x2
+  pop tmp fibList
+  tmp -= x1
+  push x1 fibList
+  push x2 fibList
+
+  # Teardown
+  despawn fib infiniteFib serve
+  delocal int x1
+  delocal int x2
+  delocal int i (size fibList - 1)
+  delocal int tmp
+}
+
+coroutine infiniteFib(int x1, int x2) {
+  x1 += 1
+  x2 += 1
+  from x1 == 1 and x2 == 1
+  do
+    x1 += x2
+    swap x1 x2
+    yield serve
+  until 0
+}

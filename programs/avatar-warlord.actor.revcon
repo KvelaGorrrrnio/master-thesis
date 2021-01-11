@@ -1,0 +1,56 @@
+@actor
+
+global int winningNation
+
+actor main.init() {
+  local int element
+  element += 1
+  spawn firenation nation
+  send firenation.init(element)
+  element += 2
+  spawn waternation nation
+  send waternation.init(element)
+  local actor victim waternation
+  send firenation.attack(victim)
+  delocal actor victim
+}
+actor main.victory(int inElement) {
+  swap winningNation inElement
+  element += 1
+  send firenation.teardown(element)
+  element += 2
+  send waternation.teardown(element)
+  delocal int element
+}
+actor main.down(int inElement) {
+  if inElement == 1
+  then despawn firenation nation
+  else despawn waternation nation
+  fi inElement == 1
+}
+
+actor nation.init(int inElement) from warlord {
+  local actor leader warlord
+  local int element inElement
+}
+actor nation.attack(actor nation) {
+  local int attackingElement element
+  send nation.defend(attackingElement)
+  delocal int attackingElement
+}
+actor nation.defend(int attackingElement) from attacker {
+  if attackingElement < element
+  then send self.win()
+  else send attacker.win()
+  fi attackingElement < element
+}
+actor nation.win() {
+  local int winningElement element
+  send leader.victory(winningElement)
+  delocal int winningElement
+}
+actor nation.teardown(int inElement) from warlord {
+  delocal actor leader warlord
+  delocal int element inElement
+  send warlord.down(inElement)
+}

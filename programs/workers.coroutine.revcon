@@ -1,0 +1,53 @@
+@coroutine
+
+coroutine main(list coroutine() ws) {
+  local int id 0
+
+  # spawn worker 1
+  id += 1
+  spawn w worker (id)
+  push w ws
+
+  # spawn worker 2
+  id += 1
+  spawn w worker (id)
+  push w ws
+  
+  delocal int id 2
+
+  # Spawn handler
+  spawn h handler
+  resume h (ws)
+  despawn h handler
+}
+
+coroutine worker() with (int id) {
+  local int state 0
+
+  if id == 1
+  then local int a
+  else local int a 1
+  fi id == 1
+
+  if id == 1
+  then
+    a += 1
+    state += 100 * a
+  else state += 50
+  fi id == 1
+  delocal int a 1
+  yield unique
+}
+
+coroutine handler(list coroutine() workers) {
+  local coroutine() worker1
+  local coroutine() worker2
+  pop worker1 workers
+  pop worker2 workers
+  resume worker1 ()
+  resume worker2 ()
+  push worker2 workers
+  push worker1 workers
+  delocal coroutine() worker2
+  delocal coroutine() worker1
+}

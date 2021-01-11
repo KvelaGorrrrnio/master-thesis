@@ -1,0 +1,77 @@
+@actor
+
+global int workable_data
+
+actor main.init() {
+  spawn server server
+  send server.setup()
+}
+actor main.serverup() {
+  send server.connect()
+}
+actor main.serverdown() {
+  despawn server server
+}
+actor main.connected(actor inWorker) {
+  local actor worker
+  swap inWorker worker
+  send worker.work(workable_data)
+}
+actor main.disconnected() {
+  send server.shutdown()
+}
+actor main.worked(int inData) {
+  swap workable_data inData
+  if workable_data > 101
+  then 
+    send server.disconnect(worker)
+    delocal actor worker
+  else send worker.work(workable_data)
+  fi workable_data > 101
+}
+
+actor server.setup() from main {
+  local list actor workers
+  local actor worker
+  local int i
+  from i == 0
+  do
+    spawn worker worker
+    push worker workers
+    i += 1
+  until i == 4
+  delocal int i 4
+  delocal actor worker
+
+  send main.serverup()
+}
+actor server.shutdown() from main {
+  local actor worker
+  local int i
+  from i == 0
+  do
+    pop worker workers
+    despawn worker worker
+    i += 1
+  until i == 4
+  delocal int i 4
+  delocal actor worker
+  delocal list actor workers
+
+  send main.serverdown()
+}
+actor server.connect() from client {
+  local actor worker
+  pop worker workers
+  send client.connected(worker)
+  delocal actor worker
+}
+actor server.disconnect(actor worker) from client {
+  push worker workers
+  send client.disconnected()
+}
+
+actor worker.work(int data) from client {
+  data += 10
+  send client.worked(data)
+}
