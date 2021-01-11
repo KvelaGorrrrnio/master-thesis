@@ -1,4 +1,4 @@
-# RevCon: An Extandable Reversible Concurrent Programming Language Collection
+# RevCon: An Extandable Concurrent Reversible Programming Language Collection
 
 In order to build the project, haskel-stack is required.
 
