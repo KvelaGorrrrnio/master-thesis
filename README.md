@@ -1,4 +1,4 @@
-# master-thesis
+# RevCon: An Extandable Reversible Concurrent Programming Language Collection
 
 In order to build the project, haskel-stack is required.
 
